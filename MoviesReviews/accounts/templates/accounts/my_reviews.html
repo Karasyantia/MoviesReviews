@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Мои отзывы{% endblock %}
+{% block content %}
+<h1>Мои отзывы</h1>
+{% if reviews %}
+    <div class="list-group">
+        {% for review in reviews %}
+            <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h5 class="mb-1">
+                        <a href="{% url 'movie_detail' review.movie.pk %}" class="text-decoration-none">{{ review.movie.title }}</a>
+                    </h5>
+                    <small>{{ review.created_at|date:"d.m.Y H:i" }}</small>
+                </div>
+                <p class="mb-1">Оценка: <strong>{{ review.rating }}/5</strong></p>
+                <p class="mb-1">{{ review.text|truncatewords:30 }}</p>
+                <div class="mt-2">
+                    <a href="{% url 'review_edit' review.pk %}" class="btn btn-sm btn-outline-primary">Редактировать</a>
+                    <a href="{% url 'review_delete' review.pk %}" class="btn btn-sm btn-outline-danger">Удалить</a>
+                    <a href="{% url 'movie_detail' review.movie.pk %}" class="btn btn-sm btn-outline-secondary">К фильму</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p>Вы ещё не оставили ни одного отзыва.</p>
+    <a href="{% url 'movie_list' %}" class="btn btn-primary">Перейти к фильмам</a>
+{% endif %}
+{% endblock %}

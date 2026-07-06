@@ -1,0 +1,27 @@
+# Django #
+*.log
+*.pot
+*.pyc
+__pycache__/
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Медиафайлы (исключаем все загруженные изображения) #
+media/
+!media/posters/.gitkeep
+!media/avatars/.gitkeep
+
+# Виртуальное окружение #
+venv/
+.venv/
+env/
+.env/
+
+# IDE (PyCharm) #
+.idea/
+*.iml
+
+# Файлы ОС #
+.DS_Store
+Thumbs.db

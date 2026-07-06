@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Добавить фильм{% endblock %}
+{% block content %}
+<h1>Добавить новый фильм</h1>
+<form method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Сохранить</button>
+    <a href="{% url 'movie_list' %}" class="btn btn-outline-secondary">Отмена</a>
+</form>
+{% endblock %}

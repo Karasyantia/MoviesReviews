@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Список фильмов{% endblock %}
+{% block content %}
+<h1>Фильмы</h1>
+<div class="row">
+    {% for movie in movies %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                {% if movie.poster %}
+                    <img src="{{ movie.poster.url }}" class="card-img-top" alt="{{ movie.title }}">
+                {% else %}
+                    <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 200px;">
+                        <span class="text-white">Нет постера</span>
+                    </div>
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{{ movie.get_absolute_url }}" class="text-decoration-none">{{ movie.title }}</a>
+                    </h5>
+                    <p class="card-text">{{ movie.release_year }}</p>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <p>Пока нет ни одного фильма.</p>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+<nav aria-label="Пагинация">
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Назад</a>
+            </li>
+        {% endif %}
+        <li class="page-item disabled">
+            <span class="page-link">Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}</span>
+        </li>
+        {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+            </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

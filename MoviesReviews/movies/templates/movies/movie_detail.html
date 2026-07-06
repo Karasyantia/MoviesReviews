@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}{{ movie.title }} — Киноотзывы{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        {% if movie.poster %}
+            <img src="{{ movie.poster.url }}" class="img-fluid rounded" alt="{{ movie.title }}">
+        {% endif %}
+    </div>
+    <div class="col-md-8">
+        <h1>{{ movie.title }} ({{ movie.release_year }})</h1>
+        <p class="lead">{{ movie.description }}</p>
+        <hr>
+        <h3>Отзывы ({{ reviews.count }})</h3>
+        {% for review in reviews %}
+            <div class="card mb-2">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="card-subtitle mb-2 text-muted">{{ review.user.username }}</h6>
+                        <small>{{ review.created_at|date:"d.m.Y H:i" }}</small>
+                    </div>
+                    <p class="card-text">{{ review.text }}</p>
+                    <p>Оценка: <strong>{{ review.rating }}/5</strong></p>
+                </div>
+            </div>
+        {% empty %}
+            <p>Пока нет отзывов. Будьте первым!</p>
+        {% endfor %}
+
+        {% if user.is_authenticated %}
+            {% if user_review %}
+                <a href="{% url 'review_edit' user_review.pk %}" class="btn btn-outline-primary">Редактировать свой отзыв</a>
+                <a href="{% url 'review_delete' user_review.pk %}" class="btn btn-outline-danger">Удалить</a>
+            {% else %}
+                <a href="{% url 'review_add' movie.pk %}" class="btn btn-success">Оставить отзыв</a>
+            {% endif %}
+        {% else %}
+            <p><a href="{% url 'login' %}?next={{ request.path }}">Войдите</a>, чтобы оставить отзыв.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
